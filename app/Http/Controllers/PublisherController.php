@@ -56,4 +56,13 @@ class PublisherController extends Controller
         return response()->json([], 200);
     }
 
+    public function getBooksByIdPublisher($id){
+        $publisher = Publisher::with(['books'])->where('id',$id)->first();
+        if ($publisher === null) {
+            return response()->json([], 404);
+        }
+        return response()->json([
+            'data' => $publisher
+        ], 200);
+    }
 }

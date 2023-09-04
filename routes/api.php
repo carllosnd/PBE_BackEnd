@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\PublisherController;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
@@ -26,9 +28,18 @@ Route::get('/coba',function (){
 });
 
 Route::group(['prefix' => 'publishers'],function () {
-   Route::get('/',[\App\Http\Controllers\PublisherController::class, 'getAll']);
-   Route::get('/{id}',[\App\Http\Controllers\PublisherController::class, 'getById']);
-   Route::post('/',[\App\Http\Controllers\PublisherController::class, 'create']);
-   Route::put('/',[\App\Http\Controllers\PublisherController::class, 'update']);
-   Route::delete('/',[\App\Http\Controllers\PublisherController::class, 'delete']);
+   Route::get('/',[PublisherController::class, 'getAll']);
+    Route::get('/{id}',[PublisherController::class, 'getById']);
+    Route::get('/{id}/books',[PublisherController::class, 'getBooksByIdPublisher']);
+    Route::post('/',[PublisherController::class, 'create']);
+    Route::put('/',[PublisherController::class, 'update']);
+   Route::delete('/',[PublisherController::class, 'delete']);
+});
+
+Route::group(['prefix'=>'books'],function () {
+    Route::get('/',[BookController::class, 'getAll']);
+    Route::get('/{id}',[BookController::class, 'getById']);
+    Route::post('/',[BookController::class, 'create']);
+    Route::put('/',[BookController::class, 'update']);
+    Route::delete('/',[BookController::class, 'delete']);
 });
