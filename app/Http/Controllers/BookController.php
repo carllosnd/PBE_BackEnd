@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $books = Book::query()->with('publisher')->get();
+        $books = Book::query()
+            ->when($request->search, function ($query) use ($request){
+                $searchTerm = '%'.$request->search.'%';
+                $query->where('code','like', $searchTerm)
+                    ->orWhere('title','like',$searchTerm)
+                    ->orWhere('published_year','like',$searchTerm)
+                    ->orWhere('city','like',$searchTerm);
+            })
+            ->get();
         return response()->json([
             'data' => $books
         ], 200);
@@ -54,5 +63,31 @@ class BookController extends Controller
         return response()->json([
             'data' => $book
         ], 201);
+    }
+
+    public function update(Request $request)
+    {
+        $book = Book::find($request->id);
+        if ($book === null) {
+            return response()->json([], 404);
+        }
+        $book->title = $request->title;
+        $book->code = $request->code;
+        $book->published_year = $request->published_year;
+        $book->city = $request->city;
+        $book->save();
+        return response()->json([
+            'data' => $book
+        ], 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $book = Book::find($request->id);
+        if ($book === null) {
+            return response()->json([], 404);
+        }
+        $book->delete();
+        return response()->json([], 200);
     }
 }

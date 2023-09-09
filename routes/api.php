@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\PublisherController;
 use Illuminate\Http\Request;
@@ -26,6 +27,8 @@ Route::get('/coba',function (){
         'message' => 'Hello World, ini adalah Back-End'
     ],200);
 });
+
+Route::post('/user/login',[AuthController::class, 'verify']);
 
 Route::group(['prefix' => 'publishers'],function () {
    Route::get('/',[PublisherController::class, 'getAll']);

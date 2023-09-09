@@ -13,8 +13,15 @@ class Publisher extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
+    protected $appends = ['book_count'];
+
     public function books()
     {
         return $this->hasMany(Book::class, 'id_publisher');
+    }
+
+    public function getBookByCount()
+    {
+        return $this->books->count();
     }
 }
