@@ -30,7 +30,7 @@ Route::get('/coba',function (){
 
 Route::post('/user/login',[AuthController::class, 'verify']);
 
-Route::group(['prefix' => 'publishers'],function () {
+Route::group(['prefix' => 'publishers', 'middleware' => 'pbe.auth'],function () {
    Route::get('/',[PublisherController::class, 'getAll']);
     Route::get('/{id}',[PublisherController::class, 'getById']);
     Route::get('/{id}/books',[PublisherController::class, 'getBooksByIdPublisher']);

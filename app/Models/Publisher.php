@@ -20,8 +20,9 @@ class Publisher extends Model
         return $this->hasMany(Book::class, 'id_publisher');
     }
 
-    public function getBookByCount()
+    public function getBookCountAttribute()
     {
         return $this->books->count();
     }
+
 }

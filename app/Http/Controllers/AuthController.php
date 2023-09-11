@@ -43,6 +43,7 @@ class AuthController extends Controller
                 'token' => $userToken
             ]
         ], 200);
-    }
 
+    }
 }
+
