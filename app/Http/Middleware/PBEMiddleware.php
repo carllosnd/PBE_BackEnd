@@ -22,7 +22,8 @@ class PBEMiddleware
             ], 401);
         }else {
             $token = $request->header('pbe_token');
-            $userToken = UserToken::where('token',$token)
+            $userToken = UserToken::with('user')
+                ->where('token',$token)
                 ->where('expired','>',date('-Y-m-d H:i:s'))->first();
             if($userToken === null) {
                 #token tidak ada di db atau sudah expired
@@ -30,6 +31,7 @@ class PBEMiddleware
                     'message' => 'Silahkan login terlebih dahulu'
                 ], 401);
             }
+            $request->role = $userToken->user->role;
         }
         return $next($request);
     }
